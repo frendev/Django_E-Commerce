@@ -297,6 +297,14 @@ def sendEmail(order_id):
     except HTTPError as e:
         print(e.to_dict)
 
+#     send_mail(
+#     'Subject here',
+#     'Here is the message.',
+#     settings.EMAIL_HOST_USER,
+#     ['{}'.format(transaction.emailAddress)],
+#     fail_silently=False,
+# )
+
     #template for recievers
     # TOADDR = ['{}'.format(transaction.emailAddress)]
     # SUBJECT = ' Shopper - New Order #{}'.format(transaction.id)
