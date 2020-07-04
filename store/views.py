@@ -305,7 +305,7 @@ def sendEmail(order_id):
 #     fail_silently=False,
 # )
 
-    template for recievers
+    
     TOADDR = ['{}'.format(transaction.emailAddress)]
     SUBJECT = ' Shopper - New Order #{}'.format(transaction.id)
     TEXT = "Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!"
