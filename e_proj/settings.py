@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['shopper-e-commerce.herokuapp.com','127.0.0.1']
 
@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'e-com',
         'USER':os.getenv('DATABASE_USER'),
-        'PASSWORD':'12345678',
+        'PASSWORD':os.getenv('DATABASE_PASSWORD'),
         'HOST':os.getenv('DATABASE_HOST')
 
     }
