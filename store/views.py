@@ -10,6 +10,9 @@ from django.contrib.auth.views import PasswordResetView,PasswordResetDoneView,Pa
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 def home(request,category_slug=None):
     products=None
@@ -158,6 +161,12 @@ def cart_detail(request,total=0,counter=0,cart_item=None):
                     order_item.delete()
 
                     print('the order has been created')
+                try:
+                    sendEmail(order_details.id)
+                    print('email has been sent')
+                except IOError as e:
+                    return e
+                     
                 return redirect('thanks_page',order_details.id)
             except ObjectDoesNotExist as e:
                 return False,e
@@ -180,6 +189,13 @@ def cart_remove(request,product_id):
     else:
         cart_item.delete()
 
+    return redirect('cart_detail')
+
+def cart_remove_product(request,product_id):
+    cart=Cart.objects.get(cart_id=_cart_id(request))
+    product=get_object_or_404(Product,id=product_id)
+    cart_item=CartItem.objects.get(product=product,cart=cart)
+    cart_item.delete()
     return redirect('cart_detail')
 
 def thanks_page(request, order_id):
@@ -248,14 +264,44 @@ def viewOrder(request, order_id):
 def searchProduct(request):
     products=Product.objects.filter(name__contains=request.GET['name'])
     return render(request,'home.html',{'products':products})
+
+def sendEmail(order_id):
+    transaction=Order.objects.get(id=order_id)
+    order_items=OrderItem.objects.filter(order=transaction)
+   
+    #######sending email 
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.ehlo()  
+    FROM = settings.EMAIL_HOST_USER
+    PASSWORD = settings.EMAIL_HOST_PASSWORD
+
+    #logging in
+    server.login(FROM, PASSWORD)
+
+    #template for recievers
+    TOADDR = ['{}'.format(transaction.emailAddress)]
+    SUBJECT = ' Shopper - New Order #{}'.format(transaction.id)
+    TEXT = "Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!"
+
+    message = MIMEMultipart()
+    message['From'] = " Shopper <{}>".format(FROM)
+    message['To'] = ', '.join(TOADDR)
     
+    message['Subject'] = SUBJECT
+    message.attach(MIMEText(TEXT))
+
+    MSG = message.as_string()
+
+    #Join reciever with CC
+    FINAL_TO = TOADDR
+    server.sendmail(FROM, FINAL_TO, MSG)
 
 
 
 def about(request):
-
     return render(request,'about.html')
 
 def contact(request):
-
     return render(request,'contact.html')
