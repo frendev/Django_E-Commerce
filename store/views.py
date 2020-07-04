@@ -275,27 +275,27 @@ def sendEmail(order_id):
     transaction=Order.objects.get(id=order_id)
     order_items=OrderItem.objects.filter(order=transaction)
    
-    #######sending email 
-    # server = smtplib.SMTP('smtp.gmail.com', 587)
-    # server.ehlo()
-    # server.starttls()
-    # server.ehlo()  
-    # FROM = settings.EMAIL_HOST_USER
-    # PASSWORD = settings.EMAIL_HOST_PASSWORD
+    ######sending email 
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.ehlo()  
+    FROM = settings.EMAIL_HOST_USER
+    PASSWORD = settings.EMAIL_HOST_PASSWORD
    
-    print('insendemail')
-    message = Mail(
-    from_email=settings.EMAIL_HOST_USER,
-    to_emails=['{}'.format(transaction.emailAddress)],
-    subject=' Shopper - New Order #{}'.format(transaction.id),
-    html_content='<strong>Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!</strong>')
-    #sending email
-    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    # print('insendemail')
+    # message = Mail(
+    # from_email=settings.EMAIL_HOST_USER,
+    # to_emails=['{}'.format(transaction.emailAddress)],
+    # subject=' Shopper - New Order #{}'.format(transaction.id),
+    # html_content='<strong>Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!</strong>')
+    # #sending email
+    # sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
     
-    try:
-        response = sg.send(message)
-    except HTTPError as e:
-        print(e.to_dict)
+    # try:
+    #     response = sg.send(message)
+    # except HTTPError as e:
+    #     print(e.to_dict)
 
 #     send_mail(
 #     'Subject here',
@@ -305,23 +305,23 @@ def sendEmail(order_id):
 #     fail_silently=False,
 # )
 
-    #template for recievers
-    # TOADDR = ['{}'.format(transaction.emailAddress)]
-    # SUBJECT = ' Shopper - New Order #{}'.format(transaction.id)
-    # TEXT = "Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!"
+    template for recievers
+    TOADDR = ['{}'.format(transaction.emailAddress)]
+    SUBJECT = ' Shopper - New Order #{}'.format(transaction.id)
+    TEXT = "Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!"
 
-    # message = MIMEMultipart()
-    # message['From'] = " Shopper <{}>".format(FROM)
-    # message['To'] = ', '.join(TOADDR)
+    message = MIMEMultipart()
+    message['From'] = " Shopper <{}>".format(FROM)
+    message['To'] = ', '.join(TOADDR)
     
-    # message['Subject'] = SUBJECT
-    # message.attach(MIMEText(TEXT))
+    message['Subject'] = SUBJECT
+    message.attach(MIMEText(TEXT))
 
-    # MSG = message.as_string()
+    MSG = message.as_string()
 
-    # #Join reciever with CC
-    # FINAL_TO = TOADDR
-    # server.sendmail(FROM, FINAL_TO, MSG)
+    #Join reciever with CC
+    FINAL_TO = TOADDR
+    server.sendmail(FROM, FINAL_TO, MSG)
 
    
 def about(request):
