@@ -283,28 +283,7 @@ def sendEmail(order_id):
     FROM = settings.EMAIL_HOST_USER
     PASSWORD = settings.EMAIL_HOST_PASSWORD
    
-    # print('insendemail')
-    # message = Mail(
-    # from_email=settings.EMAIL_HOST_USER,
-    # to_emails=['{}'.format(transaction.emailAddress)],
-    # subject=' Shopper - New Order #{}'.format(transaction.id),
-    # html_content='<strong>Hi, we have received your order. We will deliver your product within 5 business days. Happy Shopping!!</strong>')
-    # #sending email
-    # sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-    
-    # try:
-    #     response = sg.send(message)
-    # except HTTPError as e:
-    #     print(e.to_dict)
-
-#     send_mail(
-#     'Subject here',
-#     'Here is the message.',
-#     settings.EMAIL_HOST_USER,
-#     ['{}'.format(transaction.emailAddress)],
-#     fail_silently=False,
-# )
-
+    server.login(FROM, PASSWORD)
     
     TOADDR = ['{}'.format(transaction.emailAddress)]
     SUBJECT = ' Shopper - New Order #{}'.format(transaction.id)
