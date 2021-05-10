@@ -21,7 +21,7 @@
 
 
 
-##### After adding product to the cart, he will be redirected to the checkout page. User can increase or decrease the quantity of the product. He can also pay here by clicking on pay with card button. After that he will get a pop up to complete the payment process.
+##### After adding the product to the cart, he will be redirected to the checkout page. User can increase or decrease the quantity of the product. He can also pay here by clicking on pay with card button. After that he will get a pop up to complete the payment process.
 
 ![Checkout Page](./Screenshots/checkout.png)
 ![payement-popup](./Screenshots/stripe-api.png)
